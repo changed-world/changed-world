@@ -1,5 +1,5 @@
 package cmc.changedworld.domain;
 
 public enum PostType {
-    XtoX, XtoY, YtoX, YtoY
+    XtoX, XtoZ, ZtoX, ZtoZ
 }
