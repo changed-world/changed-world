@@ -39,7 +39,7 @@ public class EmpathyService {
             throw new BaseException(POST_EMPATHY_INVALID_GENERATION);
         }
 
-        if(generation == "Y" && postType == "YtoY"){
+        if(generation == "Z" && postType == "ZtoZ"){
             throw new BaseException(POST_EMPATHY_INVALID_GENERATION);
         }
 
