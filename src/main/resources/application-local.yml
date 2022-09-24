@@ -29,7 +29,7 @@ spring:
   jpa:
     generate-ddl: true
     hibernate: # create: drop-create
-      ddl-auto: update
+      ddl-auto: none
       show-sql: true
 #      naming:
 #        naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy

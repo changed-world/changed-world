@@ -1,6 +1,9 @@
 package cmc.changedworld.api.vote;
 
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
+import cmc.changedworld.config.BaseException;
+import cmc.changedworld.config.BaseResponse;
+import cmc.changedworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +23,11 @@ public class VoteController {
     private final VoteService voteService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<VoteResponseDto> getCurrentVote(@PathVariable Long userId) {
-        return ResponseEntity.ok(voteService.getCurrentVote(userId));
+    public BaseResponse<VoteResponseDto> getCurrentVote(@PathVariable Long userId) {
+        try {
+            return new BaseResponse<>(voteService.getCurrentVote(userId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 }

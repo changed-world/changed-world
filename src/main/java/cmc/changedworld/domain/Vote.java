@@ -26,7 +26,8 @@ public class Vote extends BaseTimeEntity {
 
     public Integer calcPercent1() {
         long totalCount = this.topic1Count + this.topic2Count;
-        return (int)(topic1Count / totalCount);
+        int result = (int)((double)this.topic1Count / totalCount * 100);
+        return result;
     }
 
     public Vote(long voteId, String topic1, String topic2) {

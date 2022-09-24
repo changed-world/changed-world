@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,14 +30,14 @@ public class VoteResponseDto {
     private Integer percent2;
     private List<CommentResponseDto> comments;
 
-    public static VoteResponseDto of(Vote vote, User user, List<Comment> comments, BallotBox ballotBox) {
+    public static VoteResponseDto of(Vote vote, List<Comment> comments, BallotBox ballotBox) {
         return VoteResponseDto.builder()
                 .topic1(vote.getTopic1())
                 .topic2(vote.getTopic2())
                 .selectTopic(ballotBox == null? 0 : ballotBox.getCandidate().intValue())
-                .percent1(vote.calcPercent1())
-                .percent2(100 - vote.calcPercent1())
-                .comments(comments.stream().map(CommentResponseDto::fromEntity).collect(Collectors.toList()))
+                .percent1(ballotBox == null? 0 : vote.calcPercent1())
+                .percent2(ballotBox == null? 0 : 100 - vote.calcPercent1())
+                .comments(ballotBox == null? Collections.emptyList() : comments.stream().map(CommentResponseDto::fromEntity).collect(Collectors.toList()))
                 .build();
     }
 }
