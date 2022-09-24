@@ -31,9 +31,9 @@ spring:
     hibernate: # create: drop-create
       ddl-auto: update
       show-sql: true
-#      naming:
-#        naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  #      naming:
+  #        naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  #        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

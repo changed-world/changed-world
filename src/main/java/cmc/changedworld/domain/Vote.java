@@ -1,39 +1,38 @@
 package cmc.changedworld.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
+@Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "vote")
 public class Vote extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long voteId;
+    private Long voteId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id1")
-    private Post postId1;
+    private String topic1;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id2")
-    private Post postId2;
+    private String topic2;
 
-    @Column(name = "category", nullable = false)
-    private String category;
+    private Long topic1Count;
 
-    @Column(name = "date", columnDefinition = "datetime", nullable = false)
-    private String date;
+    private Long topic2Count;
 
+    public Integer calcPercent1() {
+        long totalCount = this.topic1Count + this.topic2Count;
+        int result = (int)((double)this.topic1Count / totalCount * 100);
+        return result;
+    }
 
-    public Vote(long voteId, Post postId1, Post postId2, String category, String date) {
+    public Vote(long voteId, String topic1, String topic2) {
         this.voteId = voteId;
-        this.postId1 = postId1;
-        this.postId2 = postId2;
-        this.category = category;
-        this.date = date;
+        this.topic1 = topic1;
+        this.topic2 = topic2;
     }
 }

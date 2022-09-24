@@ -1,14 +1,20 @@
 package cmc.changedworld.service;
 
 import cmc.changedworld.api.kakao.dto.UserInfoDto;
+import cmc.changedworld.config.BaseException;
+import cmc.changedworld.domain.Comment;
 import cmc.changedworld.domain.SocialType;
 import cmc.changedworld.domain.User;
+import cmc.changedworld.repository.CommentRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+
+import static cmc.changedworld.config.BaseResponseStatus.FAILED_TO_GET_COMMENT_LIST_IN_SERVER;
 
 
 @Transactional
@@ -17,6 +23,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public void insertOrUpdateUser(UserInfoDto userInfoDto) {
         String socialId = userInfoDto.getSocialId();
@@ -30,7 +37,6 @@ public class UserService {
         }
     }
 
-
     public Optional<User> findUserBySocialData(String socialId, SocialType socialType){
         Optional<User> user = userRepository.findBySocialIdAndSocialType(socialId, socialType);
         return user;
@@ -39,4 +45,14 @@ public class UserService {
     public void updateUserBySocialData(UserInfoDto userInfo){
         userRepository.updateUserBySocialIdAndSocialType(userInfo.getUsername(), userInfo.getEmail(), userInfo.getImgURL(), userInfo.getRefreshToken() ,userInfo.getSocialId(), userInfo.getSocialType());
     }
+
+    private List<Comment> findAllCommentByUser(Long userId) throws BaseException {
+        try {
+            Optional<User> byUserId = userRepository.findByUserId(userId);
+            return commentRepository.findAllByUserOrderByCreatedDateTime(byUserId.get());
+        } catch (Exception e) {
+            throw new BaseException(FAILED_TO_GET_COMMENT_LIST_IN_SERVER);
+        }
+    }
+
 }
