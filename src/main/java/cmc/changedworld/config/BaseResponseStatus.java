@@ -32,7 +32,7 @@ public enum BaseResponseStatus {
     /**
      * Look 서버 오류
      */
-    POST_LOOK_INVALID(false, 6001, "해당 게시글에 대한 중복 조회입니다.");
+    POST_LOOK_INVALID(false, 6001, "해당 게시글에 대한 중복 조회입니다."),
 
     FAILED_TO_GET_POST_IN_SERVER(false, 4003, "게시물 조회 서버 오류");
 
