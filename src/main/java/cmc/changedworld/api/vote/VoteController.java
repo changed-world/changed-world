@@ -23,7 +23,8 @@ import java.util.Map;
 public class VoteController {
 
     private final VoteService voteService;
-
+    @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
+    @ApiImplicitParam(name = "userId",value = "유저 Id", required = true,  dataType = "Long", paramType = "path")
     @GetMapping("/x/{userId}")
     public BaseResponse<VoteResponseDto> getXCurrentVote(@PathVariable Long userId) {
         try {
@@ -33,6 +34,8 @@ public class VoteController {
         }
     }
 
+    @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
+    @ApiImplicitParam(name = "userId",value = "유저 Id", required = true,  dataType = "Long", paramType = "path")                  
     @GetMapping("/z/{userId}")
     public BaseResponse<VoteResponseDto> getZCurrentVote(@PathVariable Long userId) {
         try {
@@ -50,6 +53,8 @@ public class VoteController {
         return new BaseResponse<>(result);
     }
 
+    @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
+    @ApiImplicitParam(name = "vostId",value = "투표 Id", required = true,  dataType = "Long", paramType = "path")                  
     @PostMapping("/{voteId}/comment")
     public BaseResponse<Map<String, Long>> addVoteComment(
             @PathVariable Long voteId,
@@ -65,6 +70,8 @@ public class VoteController {
         }
     }
 
+    @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
+    @ApiImplicitParam(name = "vostId",value = "투표 Id", required = true,  dataType = "Long", paramType = "path")   
     @PostMapping("/{voteId}/check")
     public BaseResponse<VoteResponseDto> voteCheck(
             @PathVariable Long voteId,
