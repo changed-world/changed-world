@@ -17,7 +17,7 @@
 #    password: ${MARIADB_PASSWORD}
 
 # docker-single-container yml
-# te
+# test
 spring:
   datasource:
     url: jdbc:mysql://springstudy.cgllngfx5zdm.ap-northeast-2.rds.amazonaws.com:3306/changedworld
