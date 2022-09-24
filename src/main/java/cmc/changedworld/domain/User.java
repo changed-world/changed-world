@@ -22,6 +22,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "email", nullable = true)
     private String email;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserGeneration userGeneration;
+
     @Column(name = "socialId", nullable = false)
     private String socialId; // 카카오 아이디 User PK값
 
