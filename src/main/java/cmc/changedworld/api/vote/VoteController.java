@@ -22,10 +22,19 @@ public class VoteController {
 
     private final VoteService voteService;
 
-    @GetMapping("/{userId}")
-    public BaseResponse<VoteResponseDto> getCurrentVote(@PathVariable Long userId) {
+    @GetMapping("/x/{userId}")
+    public BaseResponse<VoteResponseDto> getXCurrentVote(@PathVariable Long userId) {
         try {
-            return new BaseResponse<>(voteService.getCurrentVote(userId));
+            return new BaseResponse<>(voteService.getXCurrentVote(userId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @GetMapping("/z/{userId}")
+    public BaseResponse<VoteResponseDto> getZCurrentVote(@PathVariable Long userId) {
+        try {
+            return new BaseResponse<>(voteService.getZCurrentVote(userId));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

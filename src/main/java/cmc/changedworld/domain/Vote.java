@@ -16,6 +16,9 @@ public class Vote extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
+    @Enumerated(EnumType.STRING)
+    private UserGeneration generation;
+
     private String topic1;
 
     private String topic2;
