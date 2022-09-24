@@ -44,7 +44,8 @@ public class VoteService {
 
         List<Comment> comments = commentRepository.findByVoteId(vote.getVoteId());
 
-        BallotBox ballotBox = ballotBoxRepository.findByUserAndVote(user.getUserId(), vote.getVoteId())
+        BallotBox ballotBox = ballotBoxRepository.findByUserAndVote(
+                user.getUserId(), vote.getVoteId())
                 .orElse(null);
 
         return VoteResponseDto.of(vote, comments, ballotBox);
