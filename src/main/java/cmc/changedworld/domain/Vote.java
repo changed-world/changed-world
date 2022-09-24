@@ -15,13 +15,11 @@ public class Vote extends BaseTimeEntity {
     private long voteId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    @Column(nullable = false)
+    @JoinColumn(name = "post_id1")
     private Post postId1;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    @Column(nullable = false)
+    @JoinColumn(name = "post_id2")
     private Post postId2;
 
     @Column(name = "category", nullable = false)
