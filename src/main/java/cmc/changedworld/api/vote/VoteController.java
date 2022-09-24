@@ -1,15 +1,17 @@
 package cmc.changedworld.api.vote;
 
+import cmc.changedworld.api.vote.dto.VoteCheckRequestDto;
+import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
+import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : Hunseong-Park
@@ -22,10 +24,55 @@ public class VoteController {
 
     private final VoteService voteService;
 
-    @GetMapping("/{userId}")
-    public BaseResponse<VoteResponseDto> getCurrentVote(@PathVariable Long userId) {
+    @GetMapping("/x/{userId}")
+    public BaseResponse<VoteResponseDto> getXCurrentVote(@PathVariable Long userId) {
         try {
-            return new BaseResponse<>(voteService.getCurrentVote(userId));
+            return new BaseResponse<>(voteService.getXCurrentVote(userId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @GetMapping("/z/{userId}")
+    public BaseResponse<VoteResponseDto> getZCurrentVote(@PathVariable Long userId) {
+        try {
+            return new BaseResponse<>(voteService.getZCurrentVote(userId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @PostMapping
+    public BaseResponse<Map<String, Long>> addNewVote(@RequestBody VoteRequestDto requestDto) {
+        Long voteId = voteService.addNewVote(requestDto);
+        HashMap<String, Long> result = new HashMap<>();
+        result.put("voteId", voteId);
+        return new BaseResponse<>(result);
+    }
+
+    @PostMapping("/{voteId}/comment")
+    public BaseResponse<Map<String, Long>> addVoteComment(
+            @PathVariable Long voteId,
+            @RequestBody VoteCommentRequestDto requestDto
+    ) {
+        try {
+            Long commentId = voteService.addVoteComment(voteId, requestDto);
+            HashMap<String, Long> result = new HashMap<>();
+            result.put("commentId", commentId);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @PostMapping("/{voteId}/check")
+    public BaseResponse<VoteResponseDto> voteCheck(
+            @PathVariable Long voteId,
+            @RequestBody VoteCheckRequestDto requestDto
+    ) {
+        try {
+            VoteResponseDto result = voteService.voteCheck(voteId, requestDto);
+            return new BaseResponse<>(result);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
