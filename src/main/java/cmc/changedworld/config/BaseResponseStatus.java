@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
      */
     FAILED_TO_GET_POST_LIST_IN_SERVER(false,4001,"게시물 조회 서버 오류"),
     FAILED_TO_CREAT_POST_IN_SERVER(false,4002,"게시물 생성 서버 오류"),
+    FAILED_TO_GET_COMMENT_LIST_IN_SERVER(false, 4003, "댓글 리스트 조회 서버 오류"),
 
     /**
      * Empathy 서버 오류
