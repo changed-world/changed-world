@@ -2,12 +2,14 @@ package cmc.changedworld.service;
 
 import cmc.changedworld.api.kakao.dto.UserInfoDto;
 import cmc.changedworld.api.kakao.dto.UserResponseDto;
+import cmc.changedworld.config.BaseException;
 import cmc.changedworld.domain.User;
 import cmc.changedworld.jwt.*;
 import cmc.changedworld.domain.SocialType;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -53,9 +55,6 @@ public class AuthService {
 
         return userResponseDto;
     }
-
-
-
 
     private UserInfoDto getUserInfo(String accessToken) {
 
