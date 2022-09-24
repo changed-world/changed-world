@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @ApiOperation(value = "사용자 페이지 조회", notes = "사용자 페이지에 들어갈 정보를 조회합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "Long", paramType = "path"),
+            @ApiImplicitParam(name = "voteId", value = "투표 아이디", required = true, dataType = "Long", paramType = "query")
+    })
     @GetMapping("/{userId}")
     public BaseResponse<GetUserPageRes> getUserPageRes(@PathVariable Long userId, @RequestParam(required = false) Long voteId) {
         try {
