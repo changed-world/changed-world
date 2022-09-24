@@ -19,9 +19,9 @@
 # docker-single-container yml
 spring:
   datasource:
-    url: jdbc:mysql://ap-northeast.connect.psdb.cloud/changed-world?sslMode=VERIFY_IDENTITY
-    username : 360tcwoxbiff6b9yezlj
-    password : pscale_pw_eNOxMh6RLrNgS2WyRUNxqAUWFtNWbJPr41c6cHze10v
+    url: jdbc:mysql://changed-world.cntireneusp4.ap-northeast-2.rds.amazonaws.com:3306/changed_world
+    username : root
+    password : changed-world
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 30
