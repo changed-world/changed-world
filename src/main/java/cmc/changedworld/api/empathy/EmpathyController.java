@@ -24,14 +24,10 @@ public class EmpathyController {
     @Autowired
     private final EmpathyService empathyService;
 
-    @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘 첨부입니다.")
+    @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘을 첨부합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name = "accessToken",
-                    value = "사용자 accessToken"
-            )
+            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "path")
     })
-
     @ResponseBody
     @PostMapping("/empathy")
     public BaseResponse<PostEmpathyRes> createEmpathy(@Valid @RequestBody PostEmpathyReq postEmpathyReq) throws BaseException {
@@ -46,14 +42,10 @@ public class EmpathyController {
         }
     }
 
-    @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘 첨부입니다.")
+    @ApiOperation(value = "게시글 별 반성해요 이모티콘 개수 조회", notes = "게시글 별로 선택된 반성해요 이모티콘 개수를 조회합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name = "accessToken",
-                    value = "사용자 accessToken"
-            )
+            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "path")
     })
-
     @ResponseBody
     @GetMapping("/empathy/{postId}")
     public BaseResponse<GetEmpathyRes> countEmpathy(@PathVariable("postId") Long postId) throws BaseException {
