@@ -31,10 +31,14 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
+    @Column
+    private boolean checkedFromMyPage = false;
+
     @Builder
-    public Comment(String content, User user, Post post) {
+    public Comment(String content, User user, Post post, Vote vote) {
         this.content = content;
         this.user = user;
         this.post = post;
+        this.vote = vote;
     }
 }

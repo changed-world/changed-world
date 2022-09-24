@@ -1,12 +1,12 @@
 package cmc.changedworld.service;
 
+import cmc.changedworld.api.vote.dto.VoteCheckRequestDto;
+import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
+import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponseStatus;
-import cmc.changedworld.domain.BallotBox;
-import cmc.changedworld.domain.Comment;
-import cmc.changedworld.domain.User;
-import cmc.changedworld.domain.Vote;
+import cmc.changedworld.domain.*;
 import cmc.changedworld.repository.BallotBoxRepository;
 import cmc.changedworld.repository.CommentRepository;
 import cmc.changedworld.repository.UserRepository;
@@ -19,6 +19,8 @@ import java.util.List;
 
 import static cmc.changedworld.config.BaseResponseStatus.USER_ID_NOT_FOUND;
 import static cmc.changedworld.config.BaseResponseStatus.VOTE_NOT_OPENED;
+import static cmc.changedworld.domain.UserGeneration.X;
+import static cmc.changedworld.domain.UserGeneration.Z;
 
 /**
  * @author : Hunseong-Park
@@ -35,11 +37,11 @@ public class VoteService {
     private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
-    public VoteResponseDto getCurrentVote(Long userId) throws BaseException {
+    public VoteResponseDto getXCurrentVote(Long userId) throws BaseException {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
 
-        Vote vote = voteRepository.findFirstByOrderByVoteIdDesc()
+        Vote vote = voteRepository.findCurrentVote(X)
                 .orElseThrow(() -> new BaseException(VOTE_NOT_OPENED));
 
         List<Comment> comments = commentRepository.findByVoteId(vote.getVoteId());
@@ -47,6 +49,57 @@ public class VoteService {
         BallotBox ballotBox = ballotBoxRepository.findByUserAndVote(
                 user.getUserId(), vote.getVoteId())
                 .orElse(null);
+
+        return VoteResponseDto.of(vote, comments, ballotBox);
+    }
+
+    @Transactional(readOnly = true)
+    public VoteResponseDto getZCurrentVote(Long userId) throws BaseException {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
+
+        Vote vote = voteRepository.findCurrentVote(Z)
+                .orElseThrow(() -> new BaseException(VOTE_NOT_OPENED));
+
+        List<Comment> comments = commentRepository.findByVoteId(vote.getVoteId());
+
+        BallotBox ballotBox = ballotBoxRepository.findByUserAndVote(
+                        user.getUserId(), vote.getVoteId())
+                .orElse(null);
+
+        return VoteResponseDto.of(vote, comments, ballotBox);
+    }
+
+    public Long addNewVote(VoteRequestDto requestDto) {
+        return voteRepository.save(requestDto.toEntity()).getVoteId();
+    }
+
+    public Long addVoteComment(Long voteId, VoteCommentRequestDto requestDto) throws BaseException {
+        User user = userRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
+
+        Vote vote = voteRepository.findById(voteId)
+                .orElseThrow(() -> new BaseException(VOTE_NOT_OPENED));
+
+        return commentRepository.save(requestDto.toEntity(user, vote)).getCommentId();
+    }
+
+    public VoteResponseDto voteCheck(Long voteId, VoteCheckRequestDto requestDto) throws BaseException {
+        User user = userRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
+
+        Vote vote = voteRepository.findById(voteId)
+                .orElseThrow(() -> new BaseException(VOTE_NOT_OPENED));
+
+        if (requestDto.getCheckTopic() == 1) {
+            vote.topic1CountUp();
+        } else {
+            vote.topic2CountUp();
+        }
+
+        BallotBox ballotBox = ballotBoxRepository.save(requestDto.toEntity(vote, user));
+
+        List<Comment> comments = commentRepository.findByVoteId(vote.getVoteId());
 
         return VoteResponseDto.of(vote, comments, ballotBox);
     }

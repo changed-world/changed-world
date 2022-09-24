@@ -1,20 +1,28 @@
 package cmc.changedworld.service;
 
+import cmc.changedworld.api.comment.dto.GetCommentNotiRes;
 import cmc.changedworld.api.kakao.dto.UserInfoDto;
+import cmc.changedworld.api.user.model.GetUserPageRes;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.domain.Comment;
+import cmc.changedworld.domain.Post;
 import cmc.changedworld.domain.SocialType;
 import cmc.changedworld.domain.User;
 import cmc.changedworld.repository.CommentRepository;
+import cmc.changedworld.repository.PostRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static cmc.changedworld.config.BaseResponseStatus.FAILED_TO_GET_COMMENT_LIST_IN_SERVER;
+import static cmc.changedworld.config.BaseResponseStatus.FAILED_TO_GET_USER_PAGE;
 
 
 @Transactional
@@ -24,6 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     public void insertOrUpdateUser(UserInfoDto userInfoDto) {
         String socialId = userInfoDto.getSocialId();
@@ -52,6 +61,29 @@ public class UserService {
             return commentRepository.findAllByUserOrderByCreatedDateTime(byUserId.get());
         } catch (Exception e) {
             throw new BaseException(FAILED_TO_GET_COMMENT_LIST_IN_SERVER);
+        }
+    }
+
+    public GetUserPageRes getUserPage(Long userId) throws BaseException{
+        try {
+            User user = userRepository.findByUserId(userId).get();
+            List<GetCommentNotiRes> getCommentNotiResList = new ArrayList<>();
+            List<Post> allByWriter = postRepository.findAllByWriter(user);
+            List<Set<Comment>> collect = allByWriter.stream()
+                    .map(Post::getComments)
+                    .collect(Collectors.toList());
+            collect.stream()
+                    .map(GetCommentNotiRes::from)
+                    .forEach(a -> getCommentNotiResList.addAll(a));
+
+            return GetUserPageRes.builder()
+                    .userId(user.getUserId())
+                    .username(user.getUsername())
+                    .imgUrl(user.getImgUrl())
+                    .commentNotiResList(getCommentNotiResList)
+                    .build();
+        } catch (Exception e) {
+            throw new BaseException(FAILED_TO_GET_USER_PAGE);
         }
     }
 
