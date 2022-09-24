@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmpathyRepository extends JpaRepository<Empathy, Long> {
-    Empathy findByUserandPost(User user, Post post);
+    Empathy findByUserAndPost(User user, Post post);
 }

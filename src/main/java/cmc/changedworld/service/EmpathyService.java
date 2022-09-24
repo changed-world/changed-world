@@ -36,7 +36,7 @@ public class EmpathyService {
         Post post = postRepository.getById(postId);
 
         try {
-            Empathy existence = empathyRepository.findByUserandPost(user, post);
+            Empathy existence = empathyRepository.findByUserAndPost(user, post);
 
             if(existence != null){
                 throw new BaseException(POST_EMPATHY_INVALID);
