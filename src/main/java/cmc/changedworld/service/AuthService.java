@@ -2,14 +2,13 @@ package cmc.changedworld.service;
 
 import cmc.changedworld.api.kakao.dto.UserInfoDto;
 import cmc.changedworld.api.kakao.dto.UserResponseDto;
-import cmc.changedworld.config.BaseException;
 import cmc.changedworld.domain.User;
 import cmc.changedworld.jwt.*;
 import cmc.changedworld.domain.SocialType;
+import cmc.changedworld.repository.UserRepository;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,23 +29,25 @@ public class AuthService {
 
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final UserRepository userRepository;
 
 
     public UserResponseDto createToken(String accessToken, HttpServletResponse res) {
 
         //AccessToken으로 UserInfo 받기
         UserInfoDto userInfo = getUserInfo(accessToken);
-        userInfo.setUserId(userService.insertOrUpdateUser(userInfo));
 
         Assert.notNull(userInfo.getSocialId(), "유저 정보가 존재합니다.");
 
-        TokenDto tokens = jwtUtil.createToken(userInfo);
+        TokenDto tokens = jwtUtil.createRefreshToken(userInfo);
         userInfo.setRefreshToken(tokens.getJwtRefreshToken());
 
         //socialId 기준으로 DB select하여 User 데이터가 없으면 Insert, 있으면 Update
-
+        Long userId = userService.insertOrUpdateUser(userInfo);
+        userInfo.setUserId(userId);
 
         Optional<User> userBySocialData = userService.findUserBySocialData(userInfo.getSocialId(), userInfo.getSocialType());
+        TokenDto accessToken1 = jwtUtil.createAccessToken(userInfo, tokens);
 
         //UserResponseDto에 userId 추가
         UserResponseDto userResponseDto = new UserResponseDto(userBySocialData.get().getUserId(), userInfo.getUsername(), userInfo.getEmail(), userInfo.getImgURL());
