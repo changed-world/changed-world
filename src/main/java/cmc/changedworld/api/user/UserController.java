@@ -1,6 +1,8 @@
 package cmc.changedworld.api.user;
 
+import cmc.changedworld.api.comment.dto.GetCommentRes;
 import cmc.changedworld.api.user.model.GetUserPageRes;
+import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.service.UserService;
@@ -9,6 +11,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -35,4 +40,21 @@ public class UserController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    // UserInfo update (닉네임, X-Z세대 여부)
+    @PatchMapping("")
+    public BaseResponse<Map<String, Long>> updateUserInfo(
+            @RequestBody UserUpdateRequestDto requestDto) {
+        try {
+            Long userId = userService.updateUserInfo(requestDto);
+            Map<String, Long> result = new HashMap();
+            result.put("userId", userId);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+//    @GetMapping("/userPage/commet/{userId}")
+//    public BaseResponse<GetCommentRes>
 }
