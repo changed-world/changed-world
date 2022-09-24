@@ -42,7 +42,7 @@ public class AuthService {
 
         //socialId 기준으로 DB select하여 User 데이터가 없으면 Insert, 있으면 Update
         userService.insertOrUpdateUser(userInfo);
-        // test
+
         Optional<User> userBySocialData = userService.findUserBySocialData(userInfo.getSocialId(), userInfo.getSocialType());
 
         //UserResponseDto에 userId 추가
