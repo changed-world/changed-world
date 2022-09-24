@@ -11,7 +11,8 @@ public enum BaseResponseStatus {
      * 게시물 서버 오류
      */
     FAILED_TO_GET_POST_LIST_IN_SERVER(false,4001,"게시물 조회 서버 오류"),
-    FAILED_TO_CREAT_POST_IN_SERVER(false,4002,"게시물 생성 서버 오류");
+    FAILED_TO_CREAT_POST_IN_SERVER(false,4002,"게시물 생성 서버 오류"),
+    FAILED_TO_GET_POST_IN_SERVER(false, 4003, "게시물 조회 서버 오류");
 
     private final boolean isSuccess;
     private final int code;
