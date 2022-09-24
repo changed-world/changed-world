@@ -36,7 +36,7 @@ public class PostService {
 
     }
 
-    public GetPostRes getPostListByPostId(Long postId) throws BaseException {
+    public GetPostRes getPostByPostId(Long postId) throws BaseException {
         try {
             Optional<Post> byPostId = postRepository.findByPostId(postId);
             return GetPostRes.from(byPostId.get());

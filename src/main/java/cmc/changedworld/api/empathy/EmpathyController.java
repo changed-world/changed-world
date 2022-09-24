@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/empathy")
 public class EmpathyController {
     private final EmpathyService empathyService;
 
@@ -25,7 +26,7 @@ public class EmpathyController {
             @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "body")
     })
     @ResponseBody
-    @PostMapping("/empathy")
+    @PostMapping("")
     public BaseResponse<PostEmpathyRes> createEmpathy(@Valid @RequestBody PostEmpathyReq postEmpathyReq) throws BaseException {
         Long userId = postEmpathyReq.userId;
         Long postId = postEmpathyReq.postId;
@@ -43,7 +44,7 @@ public class EmpathyController {
             @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "path")
     })
     @ResponseBody
-    @GetMapping("/empathy/{postId}")
+    @GetMapping("/{postId}")
     public BaseResponse<GetEmpathyRes> countEmpathy(@PathVariable("postId") Long postId) throws BaseException {
         try{
             GetEmpathyRes getEmpathyRes = empathyService.selectEmpathy(postId);
