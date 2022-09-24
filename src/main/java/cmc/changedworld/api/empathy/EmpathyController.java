@@ -1,5 +1,6 @@
 package cmc.changedworld.api.empathy;
 
+import cmc.changedworld.api.empathy.model.GetEmpathyRes;
 import cmc.changedworld.api.empathy.model.PostEmpathyReq;
 import cmc.changedworld.api.empathy.model.PostEmpathyRes;
 import cmc.changedworld.api.kakao.dto.UserResponseDto;
@@ -13,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -47,4 +45,25 @@ public class EmpathyController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘 첨부입니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "accessToken",
+                    value = "사용자 accessToken"
+            )
+    })
+
+    @ResponseBody
+    @GetMapping("/empathy/{postId}")
+    public BaseResponse<GetEmpathyRes> countEmpathy(@PathVariable("postId") Long postId) throws BaseException {
+        try{
+            GetEmpathyRes getEmpathyRes = empathyService.selectEmpathy(postId);
+            return new BaseResponse<>(getEmpathyRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
 }

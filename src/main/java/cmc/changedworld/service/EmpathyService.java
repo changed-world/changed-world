@@ -1,6 +1,7 @@
 package cmc.changedworld.service;
 
 import cmc.changedworld.api.empathy.dto.EmpathyDto;
+import cmc.changedworld.api.empathy.model.GetEmpathyRes;
 import cmc.changedworld.api.empathy.model.PostEmpathyRes;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.domain.Empathy;
@@ -42,7 +43,6 @@ public class EmpathyService {
         }
 
         try {
-
             Long empathyId = empathyRepository.save(empathyDto.insert(user, post)).getEmpathyId();
             return new PostEmpathyRes(empathyId);
         }
@@ -50,4 +50,21 @@ public class EmpathyService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public GetEmpathyRes selectEmpathy(Long postId) throws BaseException {
+        Post post = postRepository.getById(postId);
+
+        if(postRepository.findById(postId).equals(Optional.empty())){
+            throw new BaseException(FAILED_TO_GET_POST_LIST_IN_SERVER);
+        }
+
+        try {
+            Integer count = empathyRepository.countByPost(post);
+            return new GetEmpathyRes(count);
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
