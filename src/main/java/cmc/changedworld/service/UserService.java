@@ -37,7 +37,6 @@ public class UserService {
         }
     }
 
-
     public Optional<User> findUserBySocialData(String socialId, SocialType socialType){
         Optional<User> user = userRepository.findBySocialIdAndSocialType(socialId, socialType);
         return user;
