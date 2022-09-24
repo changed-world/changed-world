@@ -27,8 +27,19 @@ public class PostController {
         }
     }
 
+    @GetMapping("/{postId}")
+    public BaseResponse<GetPostRes> getPostListByPostId(@PathVariable Long postId) {
+        try {
+            return new BaseResponse<>(postService.getPostListByPostId(postId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+
     @PostMapping("")
     public BaseResponse<PostPostRes> createPost(@RequestBody PostPostReq postPostReq) {
+
         try {
             return new BaseResponse<>(postService.createPost(postPostReq));
         } catch (BaseException e) {

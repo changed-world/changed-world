@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostPostReq {
+    private Long userId;
     private String title;
     private String content;
     private String postType;
