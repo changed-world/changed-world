@@ -14,26 +14,13 @@ public class Vote extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long voteId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id1")
-    private Post postId1;
+    private String topic1;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id2")
-    private Post postId2;
+    private String topic2;
 
-    @Column(name = "category", nullable = false)
-    private String category;
-
-    @Column(name = "date", columnDefinition = "datetime", nullable = false)
-    private String date;
-
-
-    public Vote(long voteId, Post postId1, Post postId2, String category, String date) {
+    public Vote(long voteId, String topic1, String topic2) {
         this.voteId = voteId;
-        this.postId1 = postId1;
-        this.postId2 = postId2;
-        this.category = category;
-        this.date = date;
+        this.topic1 = topic1;
+        this.topic2 = topic2;
     }
 }
