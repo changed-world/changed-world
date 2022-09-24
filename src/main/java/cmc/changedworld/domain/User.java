@@ -39,9 +39,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "refreshToken", nullable = false)
     private String refreshToken;
 
-    public User(String username, String email, String socialId, String imgUrl, String refreshToken, SocialType socialType) {
+    public User(String username, String email, UserGeneration userGeneration,String socialId, String imgUrl, String refreshToken, SocialType socialType) {
         this.username = username;
         this.email = email;
+        this.userGeneration = userGeneration;
         this.socialId = socialId;
         this.imgUrl = imgUrl;
         this.refreshToken = refreshToken;
