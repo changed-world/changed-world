@@ -8,6 +8,15 @@ public enum BaseResponseStatus {
     SUCCESS(true,200,"요청에 성공하였습니다."),
     DATABASE_ERROR(false, 400, "데이터베이스 연결에 실패하였습니다."),
 
+    /**
+     * 사용자 관련 오류
+     */
+    USER_ID_NOT_FOUND(false, 1001, "사용자 ID를 찾을 수 없습니다."),
+
+    /**
+     * 투표 관련 오류
+     */
+    VOTE_NOT_OPENED(false, 2002, "진행중인 투표가 없습니다."),
 
     /**
      * 게시물 서버 오류
@@ -24,6 +33,9 @@ public enum BaseResponseStatus {
      * Look 서버 오류
      */
     POST_LOOK_INVALID(false, 6001, "해당 게시글에 대한 중복 조회입니다.");
+
+    FAILED_TO_GET_POST_IN_SERVER(false, 4003, "게시물 조회 서버 오류");
+
 
     private final boolean isSuccess;
     private final int code;
