@@ -1,5 +1,6 @@
 package cmc.changedworld.domain;
 
+import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -47,5 +48,10 @@ public class User extends BaseTimeEntity {
         this.imgUrl = imgUrl;
         this.refreshToken = refreshToken;
         this.socialType = socialType;
+    }
+
+    public void updateInfo(UserUpdateRequestDto requestDto) {
+        this.userGeneration = requestDto.getGeneration();
+        this.username = requestDto.getNickname();
     }
 }

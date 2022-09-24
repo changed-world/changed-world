@@ -3,6 +3,7 @@ package cmc.changedworld.service;
 import cmc.changedworld.api.comment.dto.GetCommentNotiRes;
 import cmc.changedworld.api.kakao.dto.UserInfoDto;
 import cmc.changedworld.api.user.model.GetUserPageRes;
+import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.domain.Comment;
 import cmc.changedworld.domain.Post;
@@ -21,8 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static cmc.changedworld.config.BaseResponseStatus.FAILED_TO_GET_COMMENT_LIST_IN_SERVER;
-import static cmc.changedworld.config.BaseResponseStatus.FAILED_TO_GET_USER_PAGE;
+import static cmc.changedworld.config.BaseResponseStatus.*;
 
 
 @Transactional
@@ -87,4 +87,10 @@ public class UserService {
         }
     }
 
+    public Long updateUserInfo(UserUpdateRequestDto requestDto) throws BaseException {
+        User user = userRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
+        user.updateInfo(requestDto);
+        return user.getUserId();
+    }
 }
