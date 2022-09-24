@@ -28,6 +28,7 @@ public class VoteResponseDto {
     private Integer selectTopic;
     private Integer percent1;
     private Integer percent2;
+    private Integer commentCount;
     private List<CommentResponseDto> comments;
 
     public static VoteResponseDto of(Vote vote, List<Comment> comments, BallotBox ballotBox) {
@@ -38,6 +39,7 @@ public class VoteResponseDto {
                 .percent1(ballotBox == null? 0 : vote.calcPercent1())
                 .percent2(ballotBox == null? 0 : 100 - vote.calcPercent1())
                 .comments(ballotBox == null? Collections.emptyList() : comments.stream().map(CommentResponseDto::fromEntity).collect(Collectors.toList()))
+                .commentCount(ballotBox == null? 0 : comments.size())
                 .build();
     }
 }
