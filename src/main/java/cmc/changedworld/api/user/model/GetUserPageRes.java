@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetUserPageRes {
+    // 코드 작성 시작
 
 }
