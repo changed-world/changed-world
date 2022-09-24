@@ -1,5 +1,6 @@
 package cmc.changedworld.service;
 
+import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponseStatus;
@@ -65,5 +66,9 @@ public class VoteService {
                 .orElse(null);
 
         return VoteResponseDto.of(vote, comments, ballotBox);
+    }
+
+    public Long addNewVote(VoteRequestDto requestDto) {
+        return voteRepository.save(requestDto.toEntity()).getVoteId();
     }
 }

@@ -1,15 +1,16 @@
 package cmc.changedworld.api.vote;
 
+import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : Hunseong-Park
@@ -38,5 +39,13 @@ public class VoteController {
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
+    }
+
+    @PostMapping
+    public BaseResponse<Map<String, Long>> addNewVote(@RequestBody VoteRequestDto requestDto) {
+        Long voteId = voteService.addNewVote(requestDto);
+        HashMap<String, Long> result = new HashMap<>();
+        result.put("voteId", voteId);
+        return new BaseResponse<>(result);
     }
 }
