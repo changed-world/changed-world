@@ -1,5 +1,6 @@
 package cmc.changedworld.api.vote;
 
+import cmc.changedworld.api.vote.dto.VoteCheckRequestDto;
 import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
 import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
@@ -62,6 +63,18 @@ public class VoteController {
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
+    }
 
+    @PostMapping("/{voteId}/check")
+    public BaseResponse<VoteResponseDto> voteCheck(
+            @PathVariable Long voteId,
+            @RequestBody VoteCheckRequestDto requestDto
+    ) {
+        try {
+            VoteResponseDto result = voteService.voteCheck(voteId, requestDto);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 }
