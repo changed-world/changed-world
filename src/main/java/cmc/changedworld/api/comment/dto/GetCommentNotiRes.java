@@ -14,14 +14,14 @@ public class GetCommentNotiRes {
     private Long commentId;
     private Long postId;
     private String writerUsername;
-    private final String notification
-            = writerUsername + "님이 댓글을 남기셨습니다.";
+    private String notification;
 
     @Builder
     public GetCommentNotiRes(Long commentId, Long postId, String writerUsername) {
         this.commentId = commentId;
         this.postId = postId;
         this.writerUsername = writerUsername;
+        this.notification = writerUsername + "님이 댓글을 남기셨습니다.";
     }
 
 
