@@ -23,7 +23,11 @@ import java.util.Map;
 public class VoteController {
 
     private final VoteService voteService;
-
+    @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId",value = "유저 Id"),
+            @ApiImplicitParam(name = "voteId",value = "투표 Id")
+    })
     @GetMapping("/x/{userId}")
     public BaseResponse<VoteResponseDto> getXCurrentVote(@PathVariable Long userId) {
         try {
