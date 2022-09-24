@@ -1,10 +1,12 @@
 package cmc.changedworld.api.user;
 
 import cmc.changedworld.api.comment.dto.GetCommentRes;
+import cmc.changedworld.api.post.model.GetPostRes;
 import cmc.changedworld.api.user.model.GetUserPageRes;
 import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
+import cmc.changedworld.service.PostService;
 import cmc.changedworld.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PostService postService;
 
     @ApiOperation(value = "사용자 페이지 조회", notes = "사용자 페이지에 들어갈 정보를 조회합니다.")
     @ApiImplicitParams({
@@ -55,6 +58,12 @@ public class UserController {
         }
     }
 
-//    @GetMapping("/userPage/commet/{userId}")
-//    public BaseResponse<GetCommentRes>
+    @GetMapping("/userPage/post/{postId}/{commentId}")
+    public BaseResponse<GetPostRes> getPostByCommentId(@PathVariable Long postId,@PathVariable Long commentId) {
+        try {
+            return new BaseResponse<>(postService.getPostByPostId(postId, true, commentId));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }
