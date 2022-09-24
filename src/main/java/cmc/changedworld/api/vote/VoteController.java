@@ -7,6 +7,9 @@ import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.service.VoteService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
