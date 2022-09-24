@@ -19,7 +19,7 @@
 # docker-single-container yml
 spring:
   datasource:
-    url: jdbc:mysql://changed-world.cntireneusp4.ap-northeast-2.rds.amazonaws.com:3306/changed_world
+    url: jdbc:mysql://springstudy.cgllngfx5zdm.ap-northeast-2.rds.amazonaws.com:3306/changedworld
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
