@@ -1,11 +1,13 @@
 package cmc.changedworld.service;
 
-import cmc.changedworld.api.post.model.GetPostRes;
-import cmc.changedworld.api.post.model.PostPostReq;
-import cmc.changedworld.api.post.model.PostPostRes;
+import cmc.changedworld.api.comment.dto.CommentDto;
+import cmc.changedworld.api.post.model.*;
 import cmc.changedworld.config.BaseException;
+import cmc.changedworld.domain.Comment;
 import cmc.changedworld.domain.Post;
 import cmc.changedworld.domain.PostType;
+import cmc.changedworld.domain.User;
+import cmc.changedworld.repository.CommentRepository;
 import cmc.changedworld.repository.PostRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,8 @@ import static cmc.changedworld.config.BaseResponseStatus.*;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-
+    private final CommentRepository commentRepository;
+    private final CommentDto commentDto;
 
     public List<GetPostRes> getPostListByType(PostType postType) throws BaseException {
         try {
@@ -45,6 +48,18 @@ public class PostService {
         }
     }
 
+    public GetPostRes getPostByPostId(Long postId,boolean myPage,Long commentId) throws BaseException {
+        try {
+            Comment comment = commentRepository.findById(commentId).get();
+            comment.setCheckedFromMyPage(myPage);
+            commentRepository.save(comment);
+            Optional<Post> byPostId = postRepository.findByPostId(postId);
+            return GetPostRes.from(byPostId.get());
+        } catch (Exception e) {
+            throw new BaseException(FAILED_TO_GET_POST_IN_SERVER);
+        }
+    }
+
     public PostPostRes createPost(PostPostReq postPostReq) throws BaseException {
         try {
             Post build = Post.builder()
@@ -55,6 +70,26 @@ public class PostService {
                     .build();
             Post save = postRepository.save(build);
             return new PostPostRes(save.getPostId());
+        } catch (Exception e) {
+            throw new BaseException(FAILED_TO_CREAT_POST_IN_SERVER);
+        }
+    }
+
+    public PostPostCommentRes createPostComment(PostPostCommentReq postPostCommentReq) throws BaseException {
+        User user = userRepository.getById(postPostCommentReq.userId);
+        Post post = postRepository.getById(postPostCommentReq.postId);
+
+        if(userRepository.findById(postPostCommentReq.postId).equals(Optional.empty())){
+            throw new BaseException(USER_ID_NOT_FOUND);
+        }
+
+        if(postRepository.findById(postPostCommentReq.postId).equals(Optional.empty())){
+            throw new BaseException(FAILED_TO_GET_POST_IN_SERVER);
+        }
+
+        try {
+            Long commentId = commentRepository.save(commentDto.insertIntoPost(user, post, postPostCommentReq.content)).getCommentId();
+            return new PostPostCommentRes(commentId);
         } catch (Exception e) {
             throw new BaseException(FAILED_TO_CREAT_POST_IN_SERVER);
         }

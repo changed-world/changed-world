@@ -1,8 +1,12 @@
 package cmc.changedworld.api.user;
 
+import cmc.changedworld.api.comment.dto.GetCommentRes;
+import cmc.changedworld.api.post.model.GetPostRes;
 import cmc.changedworld.api.user.model.GetUserPageRes;
+import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
+import cmc.changedworld.service.PostService;
 import cmc.changedworld.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -10,11 +14,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final PostService postService;
 
     @ApiOperation(value = "사용자 페이지 조회", notes = "사용자 페이지에 들어갈 정보를 조회합니다.")
     @ApiImplicitParams({
@@ -31,6 +39,29 @@ public class UserController {
             }
 
             return new BaseResponse<>(getUserPageRes);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // UserInfo update (닉네임, X-Z세대 여부)
+    @PatchMapping("")
+    public BaseResponse<Map<String, Long>> updateUserInfo(
+            @RequestBody UserUpdateRequestDto requestDto) {
+        try {
+            Long userId = userService.updateUserInfo(requestDto);
+            Map<String, Long> result = new HashMap();
+            result.put("userId", userId);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @GetMapping("/userPage/post/{postId}/{commentId}")
+    public BaseResponse<GetPostRes> getPostByCommentId(@PathVariable Long postId,@PathVariable Long commentId) {
+        try {
+            return new BaseResponse<>(postService.getPostByPostId(postId, true, commentId));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

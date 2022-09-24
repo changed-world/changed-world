@@ -1,8 +1,7 @@
 package cmc.changedworld.api.post;
 
-import cmc.changedworld.api.post.model.GetPostRes;
-import cmc.changedworld.api.post.model.PostPostReq;
-import cmc.changedworld.api.post.model.PostPostRes;
+import cmc.changedworld.api.look.model.PostLookRes;
+import cmc.changedworld.api.post.model.*;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.domain.PostType;
@@ -56,9 +55,24 @@ public class PostController {
     })
     @PostMapping("")
     public BaseResponse<PostPostRes> createPost(@RequestBody PostPostReq postPostReq) {
-
         try {
             return new BaseResponse<>(postService.createPost(postPostReq));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @ApiOperation(value = "게시글에 대한 댓글 작성", notes = "게시글에 대한 댓글을 작성합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "Long", paramType = "body"),
+            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "body"),
+            @ApiImplicitParam(name = "comment", value = "댓글 내용", required = true, dataType = "String", paramType = "body"),
+    })
+    @PostMapping("/comment")
+    public BaseResponse<PostPostCommentRes> createPostComment(@RequestBody PostPostCommentReq postPostCommentReq) {
+        try {
+            PostPostCommentRes postPostCommentRes = postService.createPostComment(postPostCommentReq);
+            return new BaseResponse<>(postPostCommentRes);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }

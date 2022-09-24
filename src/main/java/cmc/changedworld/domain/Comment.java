@@ -1,13 +1,11 @@
 package cmc.changedworld.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Comment extends BaseTimeEntity {

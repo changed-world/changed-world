@@ -33,14 +33,30 @@ public class JwtUtil {
     }
 
 
-    public TokenDto createToken(UserInfoDto userInfoDto) {
+    public TokenDto createAccessToken(UserInfoDto userInfoDto, TokenDto tokenDto) {
+
         // createJws: JWT를 Signature로 token을 만듦.
 
         String accessToken = createJws(ACCESS_TOKEN_EXP_MIN, userInfoDto);
-        String refreshToken = createJws(REFRESH_TOKEN_EXP_MIN, null);
+        tokenDto.setJwtAccessToken(accessToken);
 
-        return new TokenDto(accessToken, refreshToken); // 생성자로 객체를 만들기 때문에 @Setter 제거했습니다.
+        return tokenDto; // 생성자로 객체를 만들기 때문에 @Setter 제거했습니다.
     }
+
+    public TokenDto createRefreshToken(UserInfoDto userInfoDto) {
+        // createJws: JWT를 Signature로 token을 만듦.
+
+        String refreshToken = createJws(REFRESH_TOKEN_EXP_MIN, null);
+        TokenDto tokenDto = new TokenDto();
+        tokenDto.setJwtRefreshToken(refreshToken);
+
+        return tokenDto; // 생성자로 객체를 만들기 때문에 @Setter 제거했습니다.
+    }
+
+
+
+
+
 
     private String createJws(Integer expMin, UserInfoDto userInfoDto) {
 
@@ -58,6 +74,7 @@ public class JwtUtil {
 
         // TODO:: null 처리 코드 확인
         if(Objects.nonNull(userInfoDto))  {
+            claims.put("userId", userInfoDto.getUserId());
             claims.put("socialId", userInfoDto.getSocialId());
             claims.put("socialType", userInfoDto.getSocialType().toString());
             claims.put("username", userInfoDto.getUsername());
