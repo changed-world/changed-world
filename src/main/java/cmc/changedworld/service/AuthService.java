@@ -36,6 +36,7 @@ public class AuthService {
 
         //AccessToken으로 UserInfo 받기
         UserInfoDto userInfo = getUserInfo(accessToken);
+        userInfo.setUserId(userService.insertOrUpdateUser(userInfo));
 
         Assert.notNull(userInfo.getSocialId(), "유저 정보가 존재합니다.");
 
@@ -43,7 +44,7 @@ public class AuthService {
         userInfo.setRefreshToken(tokens.getJwtRefreshToken());
 
         //socialId 기준으로 DB select하여 User 데이터가 없으면 Insert, 있으면 Update
-        userService.insertOrUpdateUser(userInfo);
+
 
         Optional<User> userBySocialData = userService.findUserBySocialData(userInfo.getSocialId(), userInfo.getSocialType());
 
