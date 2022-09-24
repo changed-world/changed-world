@@ -1,5 +1,6 @@
 package cmc.changedworld.api.user;
 
+import cmc.changedworld.api.comment.dto.GetCommentRes;
 import cmc.changedworld.api.user.model.GetUserPageRes;
 import cmc.changedworld.api.user.model.UserUpdateRequestDto;
 import cmc.changedworld.config.BaseException;
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     // UserInfo update (닉네임, X-Z세대 여부)
-    @PatchMapping
+    @PatchMapping("")
     public BaseResponse<Map<String, Long>> updateUserInfo(
             @RequestBody UserUpdateRequestDto requestDto) {
         try {
@@ -53,4 +54,7 @@ public class UserController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+//    @GetMapping("/userPage/commet/{userId}")
+//    public BaseResponse<GetCommentRes>
 }
