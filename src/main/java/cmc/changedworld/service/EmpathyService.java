@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static cmc.changedworld.config.BaseResponseStatus.*;
 
 @Service
@@ -35,12 +37,11 @@ public class EmpathyService {
         User user = userRepository.getById(userId);
         Post post = postRepository.getById(postId);
 
-        try {
-            Empathy existence = empathyRepository.findByUserAndPost(user, post);
+        if(empathyRepository.findByUserAndPost(user, post) != null){
+            throw new BaseException(POST_EMPATHY_INVALID);
+        }
 
-            if(existence != null){
-                throw new BaseException(POST_EMPATHY_INVALID);
-            };
+        try {
 
             Long empathyId = empathyRepository.save(empathyDto.insert(user, post)).getEmpathyId();
             return new PostEmpathyRes(empathyId);

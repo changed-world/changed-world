@@ -40,7 +40,11 @@ public class EmpathyController {
         Long userId = postEmpathyReq.userId;
         Long postId = postEmpathyReq.postId;
 
-        PostEmpathyRes postEmpathyRes = empathyService.insertEmpathy(userId, postId);
-        return new BaseResponse<>(postEmpathyRes);
+        try{
+            PostEmpathyRes postEmpathyRes = empathyService.insertEmpathy(userId, postId);
+            return new BaseResponse<>(postEmpathyRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 }
