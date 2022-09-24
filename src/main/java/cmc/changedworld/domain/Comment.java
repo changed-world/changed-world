@@ -35,9 +35,10 @@ public class Comment extends BaseTimeEntity {
     private boolean checkedFromMyPage = false;
 
     @Builder
-    public Comment(String content, User user, Post post) {
+    public Comment(String content, User user, Post post, Vote vote) {
         this.content = content;
         this.user = user;
         this.post = post;
+        this.vote = vote;
     }
 }

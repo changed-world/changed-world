@@ -18,7 +18,7 @@ public enum BaseResponseStatus {
      * 투표 관련 오류
      */
     VOTE_NOT_OPENED(false, 2002, "진행중인 투표가 없습니다."),
-
+    VOTE_NOT_FOUND(false, 2003, "투표 ID를 찾을 수 없습니다."),
     /**
      * 게시물 서버 오류
      */
@@ -29,7 +29,9 @@ public enum BaseResponseStatus {
     /**
      * Empathy 서버 오류
      */
-    POST_EMPATHY_INVALID(false, 5001, "해당 게시글에 대한 반성해요를 이미 선택하였습니다."),
+    POST_EMPATHY_DUPLICATION(false, 5001, "해당 게시글에 대한 반성해요를 이미 선택하였습니다."),
+    POST_EMPATHY_INVALID_GENERATION(false, 5001, "해당 게시글에 반성해요를 남길 수 없는 세대입니다."),
+
 
     /**
      * Look 서버 오류
