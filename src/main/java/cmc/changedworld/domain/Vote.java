@@ -40,4 +40,12 @@ public class Vote extends BaseTimeEntity {
         this.topic1Count = 0L;
         this.topic2Count = 0L;
     }
+
+    public void topic1CountUp() {
+        this.topic1Count++;
+    }
+
+    public void topic2CountUp() {
+        this.topic2Count++;
+    }
 }

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoteResponseDto {
+    private Long voteId;
     private String topic1;
     private String topic2;
     private Integer selectTopic;
@@ -33,6 +34,7 @@ public class VoteResponseDto {
 
     public static VoteResponseDto of(Vote vote, List<Comment> comments, BallotBox ballotBox) {
         return VoteResponseDto.builder()
+                .voteId(vote.getVoteId())
                 .topic1(vote.getTopic1())
                 .topic2(vote.getTopic2())
                 .selectTopic(ballotBox == null? 0 : ballotBox.getCandidate().intValue())
