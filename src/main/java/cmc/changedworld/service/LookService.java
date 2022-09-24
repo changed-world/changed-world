@@ -10,7 +10,6 @@ import cmc.changedworld.repository.LookRepository;
 import cmc.changedworld.repository.PostRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static cmc.changedworld.config.BaseResponseStatus.*;
@@ -21,7 +20,7 @@ public class LookService {
     private final LookRepository lookRepository;
     public final UserRepository userRepository;
     private final PostRepository postRepository;
-    
+
     private final LookDto lookDto;
 
     public PostLookRes insertLook(Long userId, Long postId) throws BaseException {

@@ -3,17 +3,13 @@ package cmc.changedworld.api.empathy;
 import cmc.changedworld.api.empathy.model.GetEmpathyRes;
 import cmc.changedworld.api.empathy.model.PostEmpathyReq;
 import cmc.changedworld.api.empathy.model.PostEmpathyRes;
-import cmc.changedworld.api.kakao.dto.UserResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
-import cmc.changedworld.service.AuthService;
 import cmc.changedworld.service.EmpathyService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,8 +21,8 @@ public class EmpathyController {
 
     @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘을 첨부합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "사용자 아이디",
-            required = true, dataType = "Long", paramType = "body")
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "Long", paramType = "body"),
+            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "body")
     })
     @ResponseBody
     @PostMapping("/empathy")
