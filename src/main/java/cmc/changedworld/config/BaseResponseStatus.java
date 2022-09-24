@@ -12,6 +12,7 @@ public enum BaseResponseStatus {
      * 사용자 관련 오류
      */
     USER_ID_NOT_FOUND(false, 1001, "사용자 ID를 찾을 수 없습니다."),
+    FAILED_TO_GET_USER_PAGE(false, 1002, "마이 페이지 조회 서버 오류"),
 
     /**
      * 투표 관련 오류
