@@ -58,6 +58,7 @@ public class JwtUtil {
 
         // TODO:: null 처리 코드 확인
         if(Objects.nonNull(userInfoDto))  {
+            claims.put("userId", userInfoDto.getUserId());
             claims.put("socialId", userInfoDto.getSocialId());
             claims.put("socialType", userInfoDto.getSocialType().toString());
             claims.put("username", userInfoDto.getUsername());

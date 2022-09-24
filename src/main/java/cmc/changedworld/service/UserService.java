@@ -34,15 +34,16 @@ public class UserService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public void insertOrUpdateUser(UserInfoDto userInfoDto) {
+    public Long insertOrUpdateUser(UserInfoDto userInfoDto) {
         String socialId = userInfoDto.getSocialId();
         SocialType socialType = userInfoDto.getSocialType();
         //처음 로그인 하는 유저면 DB에 insert
         if(Boolean.FALSE.equals(findUserBySocialData(socialId, socialType).isPresent())){
             User user = userInfoDto.toEntity(); //기본 Role = ROLE.USER
-            userRepository.save(user);
+            User save = userRepository.save(user);
+            return save.getUserId();
         }else{ //이미 로그인 했던 유저라면 DB update
-            updateUserBySocialData(userInfoDto);
+            return updateUserBySocialData(userInfoDto);
         }
     }
 
@@ -51,8 +52,9 @@ public class UserService {
         return user;
     }
 
-    public void updateUserBySocialData(UserInfoDto userInfo){
+    public Long updateUserBySocialData(UserInfoDto userInfo){
         userRepository.updateUserBySocialIdAndSocialType(userInfo.getUsername(), userInfo.getEmail(), userInfo.getImgURL(), userInfo.getRefreshToken() ,userInfo.getSocialId(), userInfo.getSocialType());
+        return userRepository.findByEmail(userInfo.getEmail()).get().getUserId();
     }
 
     private List<Comment> findAllCommentByUser(Long userId) throws BaseException {

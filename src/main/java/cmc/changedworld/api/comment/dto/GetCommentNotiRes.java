@@ -27,6 +27,7 @@ public class GetCommentNotiRes {
 
     public static List<GetCommentNotiRes> from(Set<Comment> comment) {
         return comment.stream()
+                .filter(Comment::isCheckedFromMyPage)
                 .map(a -> new GetCommentNotiRes(a.getCommentId(), a.getPost().getPostId(), a.getUser().getUsername()))
                 .collect(Collectors.toList());
     }

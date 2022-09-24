@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserInfoDto {
+    private Long userId;
     private String username;
     private String email;
     private UserGeneration userGeneration;

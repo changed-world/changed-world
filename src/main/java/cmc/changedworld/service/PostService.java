@@ -3,6 +3,7 @@ package cmc.changedworld.service;
 import cmc.changedworld.api.comment.dto.CommentDto;
 import cmc.changedworld.api.post.model.*;
 import cmc.changedworld.config.BaseException;
+import cmc.changedworld.domain.Comment;
 import cmc.changedworld.domain.Post;
 import cmc.changedworld.domain.PostType;
 import cmc.changedworld.domain.User;
@@ -40,6 +41,18 @@ public class PostService {
 
     public GetPostRes getPostByPostId(Long postId) throws BaseException {
         try {
+            Optional<Post> byPostId = postRepository.findByPostId(postId);
+            return GetPostRes.from(byPostId.get());
+        } catch (Exception e) {
+            throw new BaseException(FAILED_TO_GET_POST_IN_SERVER);
+        }
+    }
+
+    public GetPostRes getPostByPostId(Long postId,boolean myPage,Long commentId) throws BaseException {
+        try {
+            Comment comment = commentRepository.findById(commentId).get();
+            comment.setCheckedFromMyPage(myPage);
+            commentRepository.save(comment);
             Optional<Post> byPostId = postRepository.findByPostId(postId);
             return GetPostRes.from(byPostId.get());
         } catch (Exception e) {
