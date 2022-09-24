@@ -36,10 +36,22 @@ public class EmpathyService {
 
     public PostEmpathyRes insertEmpathy(Long userId, Long postId) throws BaseException {
         User user = userRepository.getById(userId);
+        String generation = user.getUserGeneration().toString();
+        System.out.println(generation);
         Post post = postRepository.getById(postId);
+        String postType = post.getType().toString();
+        System.out.println(postType);
 
         if(empathyRepository.findByUserAndPost(user, post) != null){
-            throw new BaseException(POST_EMPATHY_INVALID);
+            throw new BaseException(POST_EMPATHY_DUPLICATION);
+        }
+
+        if(generation == "X" && postType == "XtoX"){
+            throw new BaseException(POST_EMPATHY_INVALID_GENERATION);
+        }
+
+        if(generation == "Y" && postType == "YtoY"){
+            throw new BaseException(POST_EMPATHY_INVALID_GENERATION);
         }
 
         try {
