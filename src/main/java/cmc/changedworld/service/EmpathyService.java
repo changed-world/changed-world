@@ -10,7 +10,6 @@ import cmc.changedworld.repository.EmpathyRepository;
 import cmc.changedworld.repository.PostRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,16 +19,10 @@ import static cmc.changedworld.config.BaseResponseStatus.*;
 @Service
 @RequiredArgsConstructor
 public class EmpathyService {
-    @Autowired
     private final EmpathyRepository empathyRepository;
-
-    @Autowired
     public final UserRepository userRepository;
-
-    @Autowired
     private final PostRepository postRepository;
 
-    @Autowired
     private final EmpathyDto empathyDto;
 
     public PostEmpathyRes insertEmpathy(Long userId, Long postId) throws BaseException {

@@ -23,7 +23,6 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 public class LookController {
-    @Autowired
     private final LookService lookService;
 
     @ApiOperation(value = "사용자의 게시글 조회 정보", notes = "사용자의 게시글 조회 정보입니다.")

@@ -21,12 +21,12 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 public class EmpathyController {
-    @Autowired
     private final EmpathyService empathyService;
 
     @ApiOperation(value = "반성해요 이모티콘 첨부", notes = "반성해요 이모티콘을 첨부합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "path")
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디",
+            required = true, dataType = "Long", paramType = "body")
     })
     @ResponseBody
     @PostMapping("/empathy")
