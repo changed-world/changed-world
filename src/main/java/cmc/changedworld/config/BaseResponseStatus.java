@@ -25,6 +25,7 @@ public enum BaseResponseStatus {
     FAILED_TO_GET_POST_LIST_IN_SERVER(false,4001,"게시물 조회 서버 오류"),
     FAILED_TO_CREAT_POST_IN_SERVER(false,4002,"게시물 생성 서버 오류"),
     FAILED_TO_GET_COMMENT_LIST_IN_SERVER(false, 4003, "댓글 리스트 조회 서버 오류"),
+    POST_POST_COMMENT_INVALID_GENERATION(false, 4004, "해당 게시글에 댓글을 남길 수 없는 세대압니다."),
 
     /**
      * Empathy 서버 오류
@@ -37,7 +38,6 @@ public enum BaseResponseStatus {
      * Look 서버 오류
      */
     POST_LOOK_INVALID(false, 6001, "해당 게시글에 대한 중복 조회입니다."),
-
     FAILED_TO_GET_POST_IN_SERVER(false, 4003, "게시물 조회 서버 오류");
 
 

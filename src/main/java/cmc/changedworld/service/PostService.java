@@ -87,6 +87,17 @@ public class PostService {
             throw new BaseException(FAILED_TO_GET_POST_IN_SERVER);
         }
 
+        String generation = user.getUserGeneration().toString();
+        String postType = post.getType().toString();
+
+        if(generation == "Z" && postType == "XtoX"){
+            throw new BaseException(POST_POST_COMMENT_INVALID_GENERATION);
+        }
+
+        if(generation == "X" && postType == "ZtoZ"){
+            throw new BaseException(POST_POST_COMMENT_INVALID_GENERATION);
+        }
+
         try {
             Long commentId = commentRepository.save(commentDto.insertIntoPost(user, post, postPostCommentReq.content)).getCommentId();
             return new PostPostCommentRes(commentId);
