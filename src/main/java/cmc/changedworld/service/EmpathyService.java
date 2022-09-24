@@ -4,7 +4,6 @@ import cmc.changedworld.api.empathy.dto.EmpathyDto;
 import cmc.changedworld.api.empathy.model.GetEmpathyRes;
 import cmc.changedworld.api.empathy.model.PostEmpathyRes;
 import cmc.changedworld.config.BaseException;
-import cmc.changedworld.domain.Empathy;
 import cmc.changedworld.domain.Post;
 import cmc.changedworld.domain.User;
 import cmc.changedworld.repository.EmpathyRepository;
@@ -12,7 +11,6 @@ import cmc.changedworld.repository.PostRepository;
 import cmc.changedworld.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,10 +35,8 @@ public class EmpathyService {
     public PostEmpathyRes insertEmpathy(Long userId, Long postId) throws BaseException {
         User user = userRepository.getById(userId);
         String generation = user.getUserGeneration().toString();
-        System.out.println(generation);
         Post post = postRepository.getById(postId);
         String postType = post.getType().toString();
-        System.out.println(postType);
 
         if(empathyRepository.findByUserAndPost(user, post) != null){
             throw new BaseException(POST_EMPATHY_DUPLICATION);
