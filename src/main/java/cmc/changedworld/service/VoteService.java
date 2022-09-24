@@ -1,5 +1,6 @@
 package cmc.changedworld.service;
 
+import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
 import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
@@ -70,5 +71,15 @@ public class VoteService {
 
     public Long addNewVote(VoteRequestDto requestDto) {
         return voteRepository.save(requestDto.toEntity()).getVoteId();
+    }
+
+    public Long addVoteComment(Long voteId, VoteCommentRequestDto requestDto) throws BaseException {
+        User user = userRepository.findByUserId(requestDto.getUserId())
+                .orElseThrow(() -> new BaseException(USER_ID_NOT_FOUND));
+
+        Vote vote = voteRepository.findById(voteId)
+                .orElseThrow(() -> new BaseException(VOTE_NOT_OPENED));
+
+        return commentRepository.save(requestDto.toEntity(user, vote)).getCommentId();
     }
 }

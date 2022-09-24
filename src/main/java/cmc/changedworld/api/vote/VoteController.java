@@ -1,12 +1,12 @@
 package cmc.changedworld.api.vote;
 
+import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
 import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
 import cmc.changedworld.config.BaseResponse;
 import cmc.changedworld.service.VoteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -47,5 +47,21 @@ public class VoteController {
         HashMap<String, Long> result = new HashMap<>();
         result.put("voteId", voteId);
         return new BaseResponse<>(result);
+    }
+
+    @PostMapping("/{voteId}/comment")
+    public BaseResponse<Map<String, Long>> addVoteComment(
+            @PathVariable Long voteId,
+            @RequestBody VoteCommentRequestDto requestDto
+    ) {
+        try {
+            Long commentId = voteService.addVoteComment(voteId, requestDto);
+            HashMap<String, Long> result = new HashMap<>();
+            result.put("commentId", commentId);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+
     }
 }
