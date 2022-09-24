@@ -16,9 +16,14 @@ public enum BaseResponseStatus {
     FAILED_TO_CREAT_POST_IN_SERVER(false,4002,"게시물 생성 서버 오류"),
 
     /**
-     * Empathy서버 오류
+     * Empathy 서버 오류
      */
-    POST_EMPATHY_INVALID(false, 400, "해당 게시글에 대한 반성해요를 이미 선택하였습니다.");
+    POST_EMPATHY_INVALID(false, 5001, "해당 게시글에 대한 반성해요를 이미 선택하였습니다."),
+
+    /**
+     * Look 서버 오류
+     */
+    POST_LOOK_INVALID(false, 6001, "해당 게시글에 대한 중복 조회입니다.");
 
     private final boolean isSuccess;
     private final int code;
