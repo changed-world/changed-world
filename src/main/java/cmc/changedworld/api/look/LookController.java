@@ -25,14 +25,11 @@ import javax.validation.Valid;
 public class LookController {
     private final LookService lookService;
 
-    @ApiOperation(value = "사용자의 게시글 조회 정보", notes = "사용자의 게시글 조회 정보입니다.")
+    @ApiOperation(value = "사용자의 게시글 조회 정보", notes = "사용자의 게시글 조회 정보를 추가합니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name = "accessToken",
-                    value = "사용자 accessToken"
-            )
+            @ApiImplicitParam(name = "userId", value = "사용자 아이디", required = true, dataType = "Long", paramType = "body"),
+            @ApiImplicitParam(name = "postId", value = "게시글 아이디", required = true, dataType = "Long", paramType = "body")
     })
-
     @ResponseBody
     @PostMapping("/look")
     public BaseResponse<PostLookRes> createLook(@Valid @RequestBody PostLookReq postLookReq) throws BaseException {
