@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -21,14 +22,14 @@ public class CommentResponseDto {
     private String nickname;
     private UserGeneration userGeneration;
     private String content;
-    private LocalDateTime createdDateTime;
+    private LocalDate createdDate;
 
     public static CommentResponseDto fromEntity(Comment comment) {
         return CommentResponseDto.builder()
                 .nickname(comment.getUser().getUsername())
                 .userGeneration(comment.getUser().getUserGeneration())
                 .content(comment.getContent())
-                .createdDateTime(comment.getCreatedDateTime())
+                .createdDate(comment.getCreatedDateTime().toLocalDate())
                 .build();
     }
 }
