@@ -1,5 +1,6 @@
 package cmc.changedworld.api.vote;
 
+import cmc.changedworld.api.comment.dto.CommentResponseDto;
 import cmc.changedworld.api.vote.dto.VoteCheckRequestDto;
 import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
 import cmc.changedworld.api.vote.dto.VoteRequestDto;
@@ -59,15 +60,13 @@ public class VoteController {
     @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")
     @ApiImplicitParam(name = "vostId",value = "투표 Id", required = true,  dataType = "Long", paramType = "path")                  
     @PostMapping("/{voteId}/comment")
-    public BaseResponse<Map<String, Long>> addVoteComment(
+    public BaseResponse<CommentResponseDto> addVoteComment(
             @PathVariable Long voteId,
             @RequestBody VoteCommentRequestDto requestDto
     ) {
         try {
-            Long commentId = voteService.addVoteComment(voteId, requestDto);
-            HashMap<String, Long> result = new HashMap<>();
-            result.put("commentId", commentId);
-            return new BaseResponse<>(result);
+
+            return new BaseResponse<>(voteService.addVoteComment(voteId, requestDto));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
