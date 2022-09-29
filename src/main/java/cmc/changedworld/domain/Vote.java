@@ -19,9 +19,13 @@ public class Vote extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserGeneration generation;
 
-    private String topic1;
+    @JoinColumn(name = "post1")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Post post1;
 
-    private String topic2;
+    @JoinColumn(name = "post2")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Post post2;
 
     private Long topic1Count;
 
@@ -33,9 +37,9 @@ public class Vote extends BaseTimeEntity {
         return result;
     }
 
-    public Vote(String topic1, String topic2, UserGeneration generation) {
-        this.topic1 = topic1;
-        this.topic2 = topic2;
+    public Vote(Post post1, Post post2, UserGeneration generation) {
+        this.post1 = post1;
+        this.post2 = post2;
         this.generation = generation;
         this.topic1Count = 0L;
         this.topic2Count = 0L;

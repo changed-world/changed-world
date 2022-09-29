@@ -51,10 +51,14 @@ public class VoteController {
 
     @PostMapping
     public BaseResponse<Map<String, Long>> addNewVote(@RequestBody VoteRequestDto requestDto) {
-        Long voteId = voteService.addNewVote(requestDto);
-        HashMap<String, Long> result = new HashMap<>();
-        result.put("voteId", voteId);
-        return new BaseResponse<>(result);
+        try {
+            Long voteId = voteService.addNewVote(requestDto);
+            HashMap<String, Long> result = new HashMap<>();
+            result.put("voteId", voteId);
+            return new BaseResponse<>(result);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @ApiOperation(value = "유저 투표", notes = "유저 투표입니다.")

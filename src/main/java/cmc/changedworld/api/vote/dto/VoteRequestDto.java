@@ -1,5 +1,6 @@
 package cmc.changedworld.api.vote.dto;
 
+import cmc.changedworld.domain.Post;
 import cmc.changedworld.domain.UserGeneration;
 import cmc.changedworld.domain.Vote;
 import lombok.AllArgsConstructor;
@@ -14,11 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VoteRequestDto {
-    private String topic1;
-    private String topic2;
+    private Long post1Id;
+    private Long post2Id;
     private UserGeneration generation;
 
-    public Vote toEntity() {
-        return new Vote(topic1, topic2, generation);
-    }
 }

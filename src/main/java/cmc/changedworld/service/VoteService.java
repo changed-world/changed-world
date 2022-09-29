@@ -6,22 +6,16 @@ import cmc.changedworld.api.vote.dto.VoteCommentRequestDto;
 import cmc.changedworld.api.vote.dto.VoteRequestDto;
 import cmc.changedworld.api.vote.dto.VoteResponseDto;
 import cmc.changedworld.config.BaseException;
-import cmc.changedworld.config.BaseResponseStatus;
 import cmc.changedworld.domain.*;
-import cmc.changedworld.repository.BallotBoxRepository;
-import cmc.changedworld.repository.CommentRepository;
-import cmc.changedworld.repository.UserRepository;
-import cmc.changedworld.repository.VoteRepository;
+import cmc.changedworld.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static cmc.changedworld.config.BaseResponseStatus.USER_ID_NOT_FOUND;
-import static cmc.changedworld.config.BaseResponseStatus.VOTE_NOT_OPENED;
-import static cmc.changedworld.domain.UserGeneration.X;
-import static cmc.changedworld.domain.UserGeneration.Z;
+import static cmc.changedworld.config.BaseResponseStatus.*;
+import static cmc.changedworld.domain.UserGeneration.*;
 
 /**
  * @author : Hunseong-Park
@@ -36,6 +30,7 @@ public class VoteService {
     private final UserRepository userRepository;
     private final BallotBoxRepository ballotBoxRepository;
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
     public VoteResponseDto getXCurrentVote(Long userId) throws BaseException {
@@ -71,8 +66,12 @@ public class VoteService {
         return VoteResponseDto.of(vote, comments, ballotBox);
     }
 
-    public Long addNewVote(VoteRequestDto requestDto) {
-        return voteRepository.save(requestDto.toEntity()).getVoteId();
+    public Long addNewVote(VoteRequestDto requestDto) throws BaseException{
+        Post post1 = postRepository.findByPostId(requestDto.getPost1Id()).orElseThrow(() -> new BaseException(POST_ID_NOT_FOUND));
+        Post post2 = postRepository.findByPostId(requestDto.getPost2Id()).orElseThrow(() -> new BaseException(POST_ID_NOT_FOUND));
+
+        Vote vote = new Vote(post1, post2, requestDto.getGeneration());
+        return voteRepository.save(vote).getVoteId();
     }
 
     public CommentResponseDto addVoteComment(Long voteId, VoteCommentRequestDto requestDto) throws BaseException {

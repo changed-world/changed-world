@@ -87,14 +87,11 @@ public class PostService {
             throw new BaseException(FAILED_TO_GET_POST_IN_SERVER);
         }
 
-        String generation = user.getUserGeneration().toString();
-        String postType = post.getType().toString();
 
-        if(generation == "Z" && postType == "XtoX"){
-            throw new BaseException(POST_POST_COMMENT_INVALID_GENERATION);
-        }
+        String[] split = post.getType().toString().split("");
+        String s = user.getUserGeneration().toString();
 
-        if(generation == "X" && postType == "ZtoZ"){
+        if (!split[3].equals(s)) {
             throw new BaseException(POST_POST_COMMENT_INVALID_GENERATION);
         }
 

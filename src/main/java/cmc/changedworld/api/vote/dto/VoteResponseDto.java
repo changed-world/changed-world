@@ -35,8 +35,8 @@ public class VoteResponseDto {
     public static VoteResponseDto of(Vote vote, List<Comment> comments, BallotBox ballotBox) {
         return VoteResponseDto.builder()
                 .voteId(vote.getVoteId())
-                .topic1(vote.getTopic1())
-                .topic2(vote.getTopic2())
+                .topic1(vote.getPost1().getTitle())
+                .topic2(vote.getPost2().getTitle())
                 .selectTopic(ballotBox == null? 0 : ballotBox.getCandidate().intValue())
                 .percent1(ballotBox == null? 0 : vote.calcPercent1())
                 .percent2(ballotBox == null? 0 : 100 - vote.calcPercent1())
